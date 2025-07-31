@@ -1,0 +1,151 @@
+S01 E01 => Basic Intro & History
+# What is Node Js?
+  Node.js is an open-source, cross-platform JavaScript runtime environment that allows developers to execute JavaScript code outside of a web browser. Traditionally, JavaScript was primarily used for client-side web development within browsers. Node.js, built on Google Chrome's V8 JavaScript engine, extended JavaScript's capabilities to the server-side and for building various other types of applications.
+
+NOTE - Wherever there is JavaScript there will be JavaScript Engine.
+
+S01 E02 => Node.js - Js on Server
+# What is a Server?
+  A server is a powerful computer that provides services, data, or programs to other computers (called clients) over a network. It's always on and ready to respond when someone (a client) asks for something, like a website, a file, or some information.
+  For example:
+  . When you open a website, your browser sends a request to the server where that website is stored.
+  .The server receives the request, finds the website, and sends it back to your browser to display.
+
+.Think of a server like a waiter in a restaurant 🍽️.
+.You (the customer) ask the waiter (server) for food (data).
+.The waiter goes to the kitchen (storage) and brings the food to your table.
+.Similarly, a server brings information to your device when you ask for it (like when you search something or open a webpage).
+
+
+Js Engine -> V8 - Google
+             SpiderMonkey - FireFox
+             Chakra - MicroSoft, InternetExplorer
+             JavaScriptCore - Apple's Safari
+
+# What is V8 Engine?
+ Basic Defination:
+  V8 is Google’s open source high-performance JavaScript and WebAssembly engine, written in C++. It is used in Chrome and in Node.js, among others. It implements ECMAScript and WebAssembly, and runs on Windows, macOS, and Linux systems that use x64, IA-32, or ARM processors. V8 can be embedded into any C++ application.
+
+ Simple Defination:
+  The V8 Engine is a JavaScript engine made by Google.
+It is used to run JavaScript code inside your browser — mainly Google Chrome and also in Node.js (which is used for server-side JavaScript).
+
+It’s called "V8" because it's fast — like a V8 car engine 🚗💨.
+
+When you write JavaScript code, it’s just text. The V8 engine takes that text and converts it into machine code (code your computer understands) and runs it very fast.
+
+
+ECMAScript - 
+ECMAScript is the standard (or rulebook) for scripting languages like JavaScript.
+It defines how the language should work — its syntax, features, and behavior.
+JavaScript follows the ECMAScript standard, so all browsers know how to run it the same way.
+
+eg - var name = "Shadman";
+   - let age = 21;
+   -const city = "Jamshedpur";
+
+
+User Write ---> Js ---> Js Engine(c++ code) ---> Machine Code ---> Binary Code ---> Computer understands it.
+
+Node.js is a C++ application with v8 embadded into it.
+
+S01 E04
+(09:13)
+Whenever we create a seperate module, and require that module, so the code will run, but we cannot access the variable, methods and functions just by simply requiring from one module to another module.
+IMP - Modules by default protects there variables and functions from leaking.
+
+And if we want to access that funtion from module to another module, I have to export that function and import it where I want to use that function.
+
+(32:16)
+Common JS Modules (CJS):
+ -> module.exports
+    require() 
+ -> Bydefault used Node.js
+ -> Older way
+ -> Synchronous
+ -> non-strict mode
+
+ES Modules (ESM):(MJS)
+ -> import
+    export
+ -> Bydefault used in React.js, Angular
+ -> Newer Way
+ -> Asynchronous
+ -> strict mode
+
+ (54:05)
+ # What is module?
+   A module is collection of JS code which is separate and private to itself,contains reusable code (like functions, variables, or classes) which you can import and use in other files. 
+   To export a module we use : Module.exports = ...
+   It helps in:
+    - Organizing code better
+    - Avoiding repetition
+    - Keeping code clean and maintainable
+
+(S01 E05)
+# Why can't we access the variables and functions of the exported and then require modules in my file?
+  require("./path") OR How are variable and function private in different module?
+
+  Because require wrapes all the code of that module inside the IIFE function, 
+  like:
+   function fun(){
+    int a = 5;
+    function fun1(){
+      int b=4;
+      console.log(b)
+    }
+  }
+  console.log(a);
+
+variable 'b' is inside is block scope so will be printed without any error; But we try to print 'a' it will not print cause it is outside is block scole(" {} "); THAT SAME LOGIC applies in modules also, when we require the exported module, it wraps the required code inside a funtion (known as IIFE function), thats why we can't access it.
+
+Proper language: When Node.js loads a module with require, it encapsulates the module's code within a function scope.
+                 Variables and functions declared within this module are scoped to this function and not accessible globally.
+
+(14:30)
+IIFE - Immediatly Invoked Function Expression.
+
+(function (){
+
+})()
+
+(21:41)
+# How do you get access to module.export?
+  Node.js passes module as a parameter to the IIFE
+
+(24:44)
+Five Steps mechanism of require:-
+ 1. Resolving the module
+ 2. Loading the module
+ 3. compiles module (Wraping module inside IIFE)
+ 4. Evaluation (Executing the Module Code)
+ 5. Caching the module
+
+Resolving: Node finds the file/module path.
+Loading: Node reads the file based on its type (.js, .json, etc.).
+Wrapping: Code is wrapped in a function to create a private scope.
+Evaluating: Node runs the wrapped code.
+Caching: The result is stored, so future require() calls use the cached version.
+
+(S01 E06)
+(01:44)
+"Node.js has an `event driven architecture` capable of `asynchronous I/O`."
+
+(03:00)
+JS is synchronous single threaded language.
+
+(21:36)
+Js is synchronous but with super powers of node it become/behave asynchronous.
+
+and the super power is "LibUV"....
+
+When JS has to access a file it asks LibUV for that, LibUV gets the file and give it to the JS.
+
+(48:00)
+LibUV if needed can talk to the timer, can make API calls, can read the files and talk to the database, and lot of things, and when ever it gets back the responce it gives it back to V8 engine. So V8 engine offloads these taks(asynchronous) to LibUV, and LibUV is completes all that.
+
+few refrences to link them:
+    V8 Engine and LibUV
+1. Nobita & Doremon
+2. Modi & Amit Sha
+3. King & Queen(chess)
