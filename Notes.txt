@@ -149,3 +149,57 @@ few refrences to link them:
 1. Nobita & Doremon
 2. Modi & Amit Sha
 3. King & Queen(chess)
+
+(S01 E07)
+(42:50)
+Synchronous Functions - WILL BLOCK THE MAIN THREAD - DON'T USE 
+
+(S01 E08)
+Google V8 JavaScript Engine:-
+
+# What happens when you give your code to V8 engine?
+  Inside V8 engine our code flow through different stages:-
+
+  Stage 1: Parsing
+    In parsing v8 engine converts our code to AST(Abstract Syntax Tree).But it can't be directly converted to AST, first our code will be broken into tokens and then AST will be built of tokens.
+
+        Step 1 : Laxical Analysis
+
+           First step to convert our code to AST is to pass through Laxical Analysis Phase(known as Tokenization). In  this step our code is converted to Tokens.
+                           +--------+    +--------+
+                           |  Code  |--->| Tokens |
+                           +--------+    +--------+
+
+        Step 2 : Syntax Analysis
+           
+           Also known as parsing, In this step tokens are converted to AST.
+                           +--------+    +-----+
+                           | Tokens |--->| AST |
+                           +--------+    +-----+
+
+  Stage 2: Interpretation / Compilation
+    In this stage ASt is passed through Ignition Interpreter and converted into Byte code
+    and then it goes for Execution.
+                           +-----+    +---------+------------+
+                           | AST |--->| Ignition Interpreter |
+                           +-----+    +---------+------------+
+                                                |
+                                           +----+-----+      .~~~~~~~~~~~.
+                                           | ByteCode | ---> { Execution }
+                                           +----+-----+      .~~~~~~~~~~~.
+                                  
+    JavaScript is JIT(Just In Timed ) Compilation, That means it has Interpreter and Compiler.
+
+    So now where does compiler coems into picture is:                                                 
+    Js compiler is known as TerboFan                             Hot      Optimization
+                           +-----+    +---+------------------+    Code    +----------+--------+   
+                           | AST | ➡ | Ignition Interpreter |   ----->   | TerboFan Compiler |
+                           +-----+    +-----+----------------+            +------------+------+
+                                            ⬆              ⬆ De Optimization           ⬇
+                                            ⬆              +--------------+            ⬇
+                                            ⬆                             ⬆            ⬇
+                                      +-----+----+     .~~~~~~~~~~~.     +-------------+----------+
+                                      | ByteCode | ➡  { Execution } ⬅  | Optimized Machine Code |  
+                                      +-----+----+     .~~~~~~~~~~~.     +-------------+----------+
+                              
+    When AST is given to Ignition Interpreter it converts it to ByteCode but when it see's repeatable code(HOT code) like function, variable or any piece of code it passes it to TerboFan Compiler, and TerboFan Compiler converts that Hot code to optimized machine code, after that it again executed, This portion is known as Optimization.
