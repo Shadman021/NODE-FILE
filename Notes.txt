@@ -191,15 +191,82 @@ Google V8 JavaScript Engine:-
     JavaScript is JIT(Just In Timed ) Compilation, That means it has Interpreter and Compiler.
 
     So now where does compiler coems into picture is:                                                 
-    Js compiler is known as TerboFan                             Hot      Optimization
-                           +-----+    +---+------------------+    Code    +----------+--------+   
-                           | AST | ➡ | Ignition Interpreter |   ----->   | TerboFan Compiler |
-                           +-----+    +-----+----------------+            +------------+------+
-                                            ⬆              ⬆ De Optimization           ⬇
-                                            ⬆              +--------------+            ⬇
-                                            ⬆                             ⬆            ⬇
-                                      +-----+----+     .~~~~~~~~~~~.     +-------------+----------+
-                                      | ByteCode | ➡  { Execution } ⬅  | Optimized Machine Code |  
-                                      +-----+----+     .~~~~~~~~~~~.     +-------------+----------+
+    Js compiler is known as TerboFan    
+                                       +-----+
+                                       | AST |
+                                       +-----+ 
+                                          ⬇
+                                          ⬇               Hot      Optimization
+                               +----------+-----------+    Code    +----------+--------+   
+                               | Ignition Interpreter |   ----->   | TerboFan Compiler |
+                               +----------+-----------+            +------------+------+
+                                          ⬇         ⬆                           ⬇
+                                          ⬇         ⬆                           ⬇
+                                    +-----+----+    ⬆ De-Optimization  +--------+---------------+
+                                    | ByteCode |    ⬆ ⬅⬅⬅⬅⬅⬅⬅⬅  | Optimized Machine Code |  
+                                    +-----+----+                       +--------+---------------+
+                                          ⬇          .~~~~~~~~~~~.              ⬇
+                                          ➡➡➡➡➡  { Execution } ⬅⬅⬅⬅⬅⬅⬅⬅ 
+                                                     .~~~~~~~~~~~.
                               
     When AST is given to Ignition Interpreter it converts it to ByteCode but when it see's repeatable code(HOT code) like function, variable or any piece of code it passes it to TerboFan Compiler, and TerboFan Compiler converts that Hot code to optimized machine code, after that it again executed, This portion is known as Optimization.
+
+(S01 E09)
+We know that node has two main components,
+ - V8 Engine
+ - LibUV
+
+This video will focus on lib.uv....
+
+Lets start with, what inside Libuv?
+    Inside libuv there are 3 major components,                     Lib.uv
+      - Event Loop                                 +---------------------------------------+
+      - Call Queues                                |  +------>-----+                       |
+      - Thread Pool                                |  | Event loop |                       |
+                                                   |  +------<-----+   +--+  +--+          |
+                                                   |                   |  |  |  |          |
+                                                   |   ---------       +--+  +--+ Thread   |
+                                                   |   ---------       +--+  +--+    Pool  |
+                                                   |   ---------       |  |  |  |          |
+                                                   |   ---------       +--+  +--+          |
+                                                   | Callback Queue                        | 
+                                                   +---------------------------------------+
+
+    Event Loop :-
+      There are 4 major phases of event loop.            Event Loop
+      - Timer Phase                                +-------+      +------+
+      - Poll  Phase                                | Timer | ---> | Poll |
+      - Check Phase                                +-------+      +------+                             
+      - Close Phase                                    ⬆              ⬇
+                                                   +-------+      +-------+
+                                                   | Close | <--- | Check |
+                                                   +-------+      +-------+                                      
+     1: Timer Phase - Executes callbacks at specific intervals or once after a specified delay.
+                      setTimeOut, setInterval.
+     2: Poll Phase - Handles I/O operations like reading from or writing to files, sockets, or other streams.
+                     I/O callbacks
+                     incoming connection
+                     data
+                     fs, crypto, http.get
+     3: Check Phase - Executes callbacks immediately after the polling phase completes.
+                      setImmediate
+     4: Close Phase - Cleans up resources associated with handles that are closed or destroyed.
+
+                                +-------+                   +------+
+                                | Timer | ----------------> | Poll |
+                                +-------+                   +------+
+                                    ⬆                           ⬇
+                                    ⬆   +-------------------+   ⬇
+           Priority                 ⬆   | Process.next Tick |   ⬇
+             Cycle                  ⬆   +-------------------+   ⬇
+                                    ⬆       ⬇           ⬆       ⬇
+                                    ⬆    +-----------------+    ⬇
+                                    ⬆    |Promise Callback |    ⬇
+                                    ⬆    +-----------------+    ⬇
+                                    ⬆                           ⬇
+                                    ⬆                           ⬇
+                                +-------+                   +-------+
+                                | Close | <---------------- | Check |
+                                +-------+                   +-------+
+
+    NOTE : Priority cycle is executed before evry phase of event loop
