@@ -255,7 +255,7 @@ Lets start with, what's inside Libuv?
                                 +-------+                   +------+
                                 | Timer | ----------------> | Poll |
                                 +-------+                   +------+
-                                    ⬆  ⬆ ⬇                 ⬇ ⬆  ⬇
+                                    ⬆                           ⬇
                                     ⬆   +-------------------+   ⬇
            Priority                 ⬆   | Process.next Tick |   ⬇
              Cycle                  ⬆   +-------------------+   ⬇
@@ -264,7 +264,7 @@ Lets start with, what's inside Libuv?
                                     ⬆    |Promise Callback |    ⬇
                                     ⬆    +-----------------+    ⬇
                                     ⬆                           ⬇
-                                    ⬆   ⬆ ⬇                ⬇ ⬆  ⬇
+                                    ⬆                           ⬇
                                 +-------+                   +-------+
                                 | Close | <---------------- | Check |
                                 +-------+                   +-------+
@@ -278,22 +278,3 @@ Lets start with, what's inside Libuv?
      Node.js is primarily single-threaded in the way it executes JavaScript code. It runs on the V8 engine and uses a single main thread for handling all JavaScript logic, relying on an event loop to manage asynchronous operations without blocking the thread.
 
      However, under the hood, Node.js uses a multi-threaded architecture thanks to the libuv library, which manages a thread pool (typically 4 threads) to handle heavy tasks like file system operations, cryptography, and DNS lookups. This allows Node.js to perform non-blocking I/O efficiently.
-
-(05:29)
-One cycle of event loop is called one Tick.
-
-(31:00)
-UV_THREADPOOL_SIZE= 4 (By default)
-
-READ ABOUT :- 
- 1. LibUV's Event loop, thread pool, callback queue
- 2. Epoll
- 3. Kqueue
- 4. fds-socket descriptions
-
-(S01 E11) - 
-# How web works
-# How user makes a request to a server and how and how it gets back the responce? What happens in between all of this?
-# What is a server, web server, HTTP server, proxy server, domain name server?
-# What does it mean when someone says "our server is down"?
-# 

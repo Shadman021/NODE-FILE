@@ -9,7 +9,7 @@ S01 E02 => Node.js - Js on Server
   A server is a powerful computer that provides services, data, or programs to other computers (called clients) over a network. It's always on and ready to respond when someone (a client) asks for something, like a website, a file, or some information.
   For example:
   . When you open a website, your browser sends a request to the server where that website is stored.
-  . The server receives the request, finds the website, and sends it back to your browser to display.
+  .The server receives the request, finds the website, and sends it back to your browser to display.
 
 .Think of a server like a waiter in a restaurant 🍽️.
 .You (the customer) ask the waiter (server) for food (data).
@@ -51,7 +51,7 @@ Node.js is a C++ application with v8 embadded into it.
 
 S01 E04
 (09:13)
-Whenever we create a seperate module, and want to require that module, so that we can run that module code, but we cannot access the variable, methods and functions just by simply requiring from one module to another module.
+Whenever we create a seperate module, and require that module, so the code will run, but we cannot access the variable, methods and functions just by simply requiring from one module to another module.
 IMP - Modules by default protects there variables and functions from leaking.
 
 And if we want to access that funtion from module to another module, I have to export that function and import it where I want to use that function.
@@ -83,7 +83,7 @@ ES Modules (ESM):(MJS)
     - Keeping code clean and maintainable
 
 (S01 E05)
-# Why can't we access the variables and functions of the exported module that we require in our file?
+# Why can't we access the variables and functions of the exported and then require modules in my file?
   require("./path") OR How are variable and function private in different module?
 
   Because require wrapes all the code of that module inside the IIFE function, 
@@ -97,7 +97,7 @@ ES Modules (ESM):(MJS)
   }
   console.log(a);
 
-variable 'b' is inside is block scope so will be printed without any error; But when we try to print 'a', it will not print cause it is outside it’s block scole(" {} "); THAT SAME LOGIC applies in modules also, when we require the exported module, it wraps the required code inside a funtion (known as IIFE function), thats why we can't access it.
+variable 'b' is inside is block scope so will be printed without any error; But we try to print 'a' it will not print cause it is outside is block scole(" {} "); THAT SAME LOGIC applies in modules also, when we require the exported module, it wraps the required code inside a funtion (known as IIFE function), thats why we can't access it.
 
 Proper language: When Node.js loads a module with require, it encapsulates the module's code within a function scope.
                  Variables and functions declared within this module are scoped to this function and not accessible globally.
@@ -142,7 +142,7 @@ and the super power is "LibUV"....
 When JS has to access a file it asks LibUV for that, LibUV gets the file and give it to the JS.
 
 (48:00)
-LibUV if needed can talk to the timer, can make API calls, can read the files and talk to the database, and lot of things, and when ever it gets back the responce it gives it back to V8 engine. So V8 engine offloads these tasks(asynchronous) to LibUV, and LibUV completes all that.
+LibUV if needed can talk to the timer, can make API calls, can read the files and talk to the database, and lot of things, and when ever it gets back the responce it gives it back to V8 engine. So V8 engine offloads these taks(asynchronous) to LibUV, and LibUV is completes all that.
 
 few refrences to link them:
     V8 Engine and LibUV
@@ -178,7 +178,7 @@ Google V8 JavaScript Engine:-
                            +--------+    +-----+
 
   Stage 2: Interpretation / Compilation
-    In this stage AST is passed through Ignition Interpreter and converted into Byte code
+    In this stage ASt is passed through Ignition Interpreter and converted into Byte code
     and then it goes for Execution.
                            +-----+    +---------+------------+
                            | AST |--->| Ignition Interpreter |
@@ -191,9 +191,9 @@ Google V8 JavaScript Engine:-
     JavaScript is JIT(Just In Timed ) Compilation, That means it has Interpreter and Compiler.
 
     So now where does compiler coems into picture is:                                                 
-       
-                                       +-----+                  Js compiler is known as TerboFan
-                                       | AST |                     
+    Js compiler is known as TerboFan    
+                                       +-----+
+                                       | AST |
                                        +-----+ 
                                           ⬇
                                           ⬇               Hot      Optimization
@@ -218,10 +218,10 @@ We know that node has two main components,
 
 This video will focus on lib.uv....
 
-Lets start with, what's inside Libuv?
+Lets start with, what inside Libuv?
     Inside libuv there are 3 major components,                     Lib.uv
       - Event Loop                                 +---------------------------------------+
-      - Callback Queues                            |  +------>-----+                       |
+      - Call Queues                                |  +------>-----+                       |
       - Thread Pool                                |  | Event loop |                       |
                                                    |  +------<-----+   +--+  +--+          |
                                                    |                   |  |  |  |          |
@@ -255,7 +255,7 @@ Lets start with, what's inside Libuv?
                                 +-------+                   +------+
                                 | Timer | ----------------> | Poll |
                                 +-------+                   +------+
-                                    ⬆  ⬆ ⬇                 ⬇ ⬆  ⬇
+                                    ⬆                           ⬇
                                     ⬆   +-------------------+   ⬇
            Priority                 ⬆   | Process.next Tick |   ⬇
              Cycle                  ⬆   +-------------------+   ⬇
@@ -264,7 +264,7 @@ Lets start with, what's inside Libuv?
                                     ⬆    |Promise Callback |    ⬇
                                     ⬆    +-----------------+    ⬇
                                     ⬆                           ⬇
-                                    ⬆   ⬆ ⬇                ⬇ ⬆  ⬇
+                                    ⬆                           ⬇
                                 +-------+                   +-------+
                                 | Close | <---------------- | Check |
                                 +-------+                   +-------+
@@ -278,22 +278,3 @@ Lets start with, what's inside Libuv?
      Node.js is primarily single-threaded in the way it executes JavaScript code. It runs on the V8 engine and uses a single main thread for handling all JavaScript logic, relying on an event loop to manage asynchronous operations without blocking the thread.
 
      However, under the hood, Node.js uses a multi-threaded architecture thanks to the libuv library, which manages a thread pool (typically 4 threads) to handle heavy tasks like file system operations, cryptography, and DNS lookups. This allows Node.js to perform non-blocking I/O efficiently.
-
-(05:29)
-One cycle of event loop is called one Tick.
-
-(31:00)
-UV_THREADPOOL_SIZE= 4 (By default)
-
-READ ABOUT :- 
- 1. LibUV's Event loop, thread pool, callback queue
- 2. Epoll
- 3. Kqueue
- 4. fds-socket descriptions
-
-(S01 E11) - 
-# How web works
-# How user makes a request to a server and how and how it gets back the responce? What happens in between all of this?
-# What is a server, web server, HTTP server, proxy server, domain name server?
-# What does it mean when someone says "our server is down"?
-# 

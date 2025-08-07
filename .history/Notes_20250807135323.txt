@@ -291,9 +291,4 @@ READ ABOUT :-
  3. Kqueue
  4. fds-socket descriptions
 
-(S01 E11) - 
-# How web works
-# How user makes a request to a server and how and how it gets back the responce? What happens in between all of this?
-# What is a server, web server, HTTP server, proxy server, domain name server?
-# What does it mean when someone says "our server is down"?
-# 
+(S01 E11)
